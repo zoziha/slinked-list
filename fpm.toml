@@ -1,0 +1,14 @@
+name = "slinked-list"
+version = "0.1.0"
+license = "MIT"
+author = "zoziha"
+maintainer = "zuo.zhihua@qq.com"
+copyright = "Copyright 2022, zoziha"
+
+[build]
+auto-executables = true
+auto-tests = true
+auto-examples = true
+
+[install]
+library = false
