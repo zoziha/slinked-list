@@ -3,6 +3,7 @@ module sll_iterator
 
     use sll_node, only: node
     use sll_linked_list, only: sll
+    use, intrinsic :: iso_fortran_env, only: stderr => error_unit
     implicit none
 
     private
@@ -32,7 +33,8 @@ contains
         if (associated(list%tail)) then
             iterator_init%tail_next => list%tail%next
         else
-            stop "sll_module.iterator_init: linked list is empty"
+            write (stderr, "(a)") "<ERROR> sll_module.iterator_init: linked list is empty"
+            stop 1
         end if
 
     end function iterator_init
