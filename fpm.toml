@@ -1,14 +1,15 @@
 name = "slinked-list"
-version = "0.1.0"
+version = "1.0.0"
 license = "MIT"
-author = "zoziha"
+author = "ZUO Zhihua"
 maintainer = "zuo.zhihua@qq.com"
-copyright = "Copyright 2022, zoziha"
+copyright = "Copyright 2022, ZUO Zhihua"
 
 [build]
 auto-executables = true
 auto-tests = true
 auto-examples = true
+module-naming = "sll"
 
 [install]
 library = false
