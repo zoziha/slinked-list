@@ -12,11 +12,11 @@ Simple generic singly linked list module for in-memory storage of small amounts 
 Only FPM is supported, other build systems can copy source files directly,
 and `ifort/ifx` and `gfortran` compilers are tested.
 
-To use `sliked-list` within your `fpm` project, add the following lines to your `fpm.toml` file:
+To use `slinked-list` within your `fpm` project, add the following lines to your `fpm.toml` file:
 
 ```toml
 [dependencies]
-sliked-list = { git="https://github.com/zoziha/sliked-list" }
+slinked-list = { git="https://github.com/zoziha/slinked-list" }
 ```
 
 ## Example
