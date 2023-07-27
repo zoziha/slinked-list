@@ -29,7 +29,11 @@ contains
         type(sll), intent(in), target :: list  !! singly linked list to iterate
 
         iterator_init%current => list%head
-        iterator_init%tail_next => list%tail%next
+        if (associated(list%tail)) then
+            iterator_init%tail_next => list%tail%next
+        else
+            stop "sll_module.iterator_init: linked list is empty"
+        end if
 
     end function iterator_init
 
@@ -37,7 +41,8 @@ contains
     pure subroutine iterator_finalizer(self)
         type(iterator), intent(inout) :: self  !! iterator to finalize
 
-        self%current => null()
+        nullify (self%current)
+        nullify (self%tail_next)
 
     end subroutine iterator_finalizer
 

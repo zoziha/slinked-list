@@ -13,7 +13,7 @@ module sll_linked_list
         type(node), pointer :: head => null()  !! head of the list
         type(node), pointer :: tail => null()  !! tail of the list
     contains
-        procedure :: push_back, empty, size
+        procedure :: push_back, empty, size, is_empty
     end type sll
 
 contains
@@ -57,6 +57,14 @@ contains
 
     end subroutine empty
 
+    !> sll is_empty
+    logical pure function is_empty(self)
+        class(sll), intent(in) :: self  !! sll object to be checked
+
+        is_empty = .not. associated(self%tail)
+
+    end function is_empty
+
     !> sll size
     integer pure function size(self, capacity)
         class(sll), intent(in) :: self  !! sll object to be measured
@@ -95,6 +103,10 @@ contains
                 current => self%head
             end do
         end if
+
+        if (associated(self%tail)) nullify (self%tail)
+        self%len = 0
+        self%cap = 0
 
     end subroutine sll_finalizer
 

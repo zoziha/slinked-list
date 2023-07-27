@@ -17,17 +17,21 @@ program main
     call display(list%size(), "size:", inline=.true.)
     call display(list%size(.true.), "capacity:", inline=.true.)
 
-    iter = iterator(list)
-    do while (iter%next(ptr))
+    if (.not. list%is_empty()) then
 
-        select type (ptr)
-        type is (real)
-            call display(ptr, "v:", inline=.true.)
-        type is (integer)
-            call display(ptr, "v:", inline=.true.)
-        end select
+        iter = iterator(list)
+        do while (iter%next(ptr))
 
-    end do
+            select type (ptr)
+            type is (real)
+                call display(ptr, "v:", inline=.true.)
+            type is (integer)
+                call display(ptr, "v:", inline=.true.)
+            end select
+
+        end do
+
+    end if
 
     call display(sll_storage(list) + storage_size(list), "storage size (bit):", inline=.true.)
     call sll_finalizer(list)  ! free memory
