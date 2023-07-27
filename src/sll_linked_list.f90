@@ -1,7 +1,7 @@
 !> Singly linked list
 module sll_linked_list
 
-    use sll_node, only: node, node_init, node_finalizer, node_storage
+    use sll_node, only: node, node_init, node_finalizer, node_storage, node_replace
     implicit none
 
     private
@@ -9,28 +9,77 @@ module sll_linked_list
 
     !> singly linked list
     type sll
+        integer, private :: len = 0, cap = 0  !! length and capacity of the list
         type(node), pointer :: head => null()  !! head of the list
         type(node), pointer :: tail => null()  !! tail of the list
     contains
-        procedure :: push_back
+        procedure :: push_back, empty, size
     end type sll
 
 contains
 
     !> sll push_back
-    pure subroutine push_back(self, data)
+    subroutine push_back(self, data)
         class(sll), intent(inout) :: self  !! sll object to be modified
         class(*), intent(in) :: data  !! data to be stored
 
-        if (associated(self%tail)) then
-            allocate (self%tail%next, source=node_init(data))
-            self%tail => self%tail%next
-        else
-            allocate (self%head, source=node_init(data))
-            self%tail => self%head
+        if (self%cap == 0 .or. self%len >= self%cap) then  ! allocate new memory
+            if (associated(self%tail)) then
+                allocate (self%tail%next, source=node_init(data))
+                self%tail => self%tail%next
+                self%len = self%len + 1
+            else
+                allocate (self%head, source=node_init(data))
+                self%tail => self%head
+                self%len = 1
+            end if
+        else  ! fill existing memory, replace data
+            if (associated(self%tail)) then
+                call node_replace(self%tail%next, data)
+                self%tail => self%tail%next
+                self%len = self%len + 1
+            else
+                call node_replace(self%head, data)
+                self%tail => self%head
+                self%len = 1
+            end if
         end if
 
     end subroutine push_back
+
+    !> sll empty
+    pure subroutine empty(self)
+        class(sll), intent(inout) :: self  !! sll object to be modified
+
+        if (associated(self%tail)) nullify (self%tail)
+        self%cap = max(self%cap, self%len)
+        self%len = 0
+
+    end subroutine empty
+
+    !> sll size
+    integer pure function size(self, capacity)
+        class(sll), intent(in) :: self  !! sll object to be measured
+        logical, intent(in), optional :: capacity  !! whether to return capacity or length
+        logical :: capacity_
+
+        if (present(capacity)) then
+            capacity_ = capacity
+        else
+            capacity_ = .false.
+        end if
+
+        if (capacity_) then
+            if (self%cap == 0) then
+                size = self%len
+            else
+                size = self%cap
+            end if
+        else
+            size = self%len
+        end if
+
+    end function size
 
     !> sll finalizer
     subroutine sll_finalizer(self)

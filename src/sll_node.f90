@@ -4,7 +4,7 @@ module sll_node
     implicit none
 
     private
-    public :: node, node_finalizer, node_init, node_storage
+    public :: node, node_finalizer, node_init, node_replace, node_storage
 
     !> node type
     type node
@@ -21,6 +21,16 @@ contains
         allocate (node_init%data, source=data)
 
     end function node_init
+
+    !> replace node data
+    subroutine node_replace(self, data)
+        type(node), intent(inout) :: self  !! node to replace data
+        class(*), intent(in) :: data  !! data to store
+
+        if (allocated(self%data)) deallocate (self%data)
+        allocate (self%data, source=data)
+
+    end subroutine node_replace
 
     !> finalize node
     subroutine node_finalizer(self)

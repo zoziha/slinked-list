@@ -1,31 +1,3 @@
-# Singly Linked List
-
-![Language](https://img.shields.io/badge/-Fortran-734f96?logo=fortran&logoColor=white)
-[![license](https://img.shields.io/badge/License-MIT-pink)](LICENSE)
-
-Simple generic singly linked list module for in-memory storage of small amounts of data. `sll` provides the ability to reuse linked list space to avoid the time-consuming duplication of memory allocation and destruction in certain application scenarios.
-
-*Suggestions and code contributions are welcome.*
-
-## Usage
-
-Only FPM is supported, other build systems can copy source files directly,
-and `ifort/ifx` and `gfortran` compilers are tested.
-
-To use `sliked-list` within your `fpm` project, add the following lines to your `fpm.toml` file:
-
-```toml
-[dependencies]
-sliked-list = { git="https://github.com/zoziha/sliked-list" }
-```
-
-## Example
-
-```sh
-> fpm run --example --all  # run the example
-```
-
-```fortran
 program main
 
     use sll_module, only: sll, iterator, sll_storage, sll_finalizer, iterator_finalizer
@@ -68,12 +40,3 @@ end program main
 !> [scalar] capacity: 2
 !> [scalar] v:  3.000E+00
 !> [scalar] storage size (bit): 1664
-```
-
-Note: Due to the type conversion of `class(*)`, `sll` is not efficient, so it is only used for storing small datasets.
-
-## Link
-
-- [zoziha/dlinked_list](https://gitee.com/zoziha/dlinked_list)
-- [fortran-lang/stdlib](https://github.com/fortran-lang/stdlib)
-- [浅谈单链表与双链表的区别](https://blog.csdn.net/kangxidagege/article/details/80211225)

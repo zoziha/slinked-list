@@ -12,6 +12,7 @@ module sll_iterator
     type iterator
         private
         type(node), pointer :: current => null()  !! current node
+        type(node), pointer :: tail_next => null()     !! tail next node
     contains
         procedure :: next
     end type iterator
@@ -28,6 +29,7 @@ contains
         type(sll), intent(in), target :: list  !! singly linked list to iterate
 
         iterator_init%current => list%head
+        iterator_init%tail_next => list%tail%next
 
     end function iterator_init
 
@@ -44,10 +46,19 @@ contains
         class(iterator), intent(inout) :: self  !! iterator to advance
         class(*), pointer, intent(out) :: data  !! data stored in current node (if any)
 
-        next = associated(self%current)
-        if (next) then
-            data => self%current%data
-            self%current => self%current%next
+
+        if (associated(self%current)) then
+
+            next = .not. associated(self%current, self%tail_next)
+            if (next) then
+                data => self%current%data
+                self%current => self%current%next
+            end if
+
+        else
+
+            next = .false.
+
         end if
 
     end function next
@@ -56,7 +67,7 @@ contains
     pure integer function iterator_storage(self)
         type(iterator), intent(in) :: self  !! iterator to get storage size
 
-        iterator_storage = storage_size(self%current)
+        iterator_storage = storage_size(self%current)*2
 
     end function iterator_storage
 

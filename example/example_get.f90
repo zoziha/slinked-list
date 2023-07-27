@@ -1,6 +1,7 @@
 program main
 
     use sll_module, only: sll, iterator, sll_storage, sll_finalizer, iterator_finalizer
+    use display_module, only: display
     implicit none
     type(sll) :: list  !! singly linked list
     type(iterator) :: iter  !! iterator for sll
@@ -14,18 +15,18 @@ program main
 
         select type (ptr)
         type is (real)
-            print *, "v: ", ptr
+            call display(ptr, "v:", inline=.true.)
         type is (integer)
-            print *, "v: ", ptr
+            call display(ptr, "v:", inline=.true.)
         end select
 
     end do
 
-    print *, "storage size: ", sll_storage(list) + storage_size(list), " bits."
+    call display(sll_storage(list) + storage_size(list), "storage size (bit):", inline=.true.)
     call sll_finalizer(list)  ! free memory
     call iterator_finalizer(iter)  ! free memory
 
 end program main
-!> v:    1.00000000    
-!> v:            2
-!> storage size:         1600  bits.
+!> [scalar] v:  1.000E+00
+!> [scalar] v: 2
+!> [scalar] storage size (bit): 4608
